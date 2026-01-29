@@ -7,6 +7,7 @@ router.get('/client/:publicToken', async (req, res) => {
     const { publicToken } = req.params;
 
     try {
+        console.log('Incoming publicToken:', publicToken);
         // 1. Fetch Client info (SELECTIVE)
         // We try BOTH public_token and numeric ID to maximize compatibility
         let query = supabase
@@ -26,7 +27,12 @@ router.get('/client/:publicToken', async (req, res) => {
 
         const { data: client, error: clientError } = await query.single();
 
-        if (clientError || !client) {
+        if (clientError) {
+            console.error('Client Query Error:', clientError);
+        }
+
+        if (!client) {
+            console.warn('No client found for token:', publicToken);
             return res.status(404).json({ error: 'Client not found' });
         }
 
@@ -39,8 +45,12 @@ router.get('/client/:publicToken', async (req, res) => {
             .eq('client_id', clientId)
             .order('created_at', { ascending: false });
 
-        if (projectsError) throw projectsError;
+        if (projectsError) {
+            console.error('Projects Query Error:', projectsError);
+            throw projectsError;
+        }
 
+        console.log(`Successfully fetched ${projects ? projects.length : 0} projects for client ID: ${clientId}`);
         res.json({ client, projects });
     } catch (err) {
         console.error('Public fetch error:', err);
