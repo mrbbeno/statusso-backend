@@ -29,11 +29,17 @@ router.get('/client/:publicToken', async (req, res) => {
 
         if (clientError) {
             console.error('Client Query Error:', clientError);
+            return res.status(404).json({
+                error: 'Client not found',
+                details: clientError.message,
+                code: clientError.code,
+                hint: clientError.hint
+            });
         }
 
         if (!client) {
             console.warn('No client found for token:', publicToken);
-            return res.status(404).json({ error: 'Client not found' });
+            return res.status(404).json({ error: 'Client not found', details: 'No rows returned' });
         }
 
         const clientId = client.id;

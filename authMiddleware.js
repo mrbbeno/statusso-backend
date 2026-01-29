@@ -33,7 +33,17 @@ const authMiddleware = async (req, res, next) => {
             },
         });
 
-        req.user = user;
+        // Fetch user plan from profiles
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('plan')
+            .eq('id', user.id)
+            .single();
+
+        req.user = {
+            ...user,
+            plan: profile?.plan || 'free'
+        };
         req.supabase = scopedSupabase;
         next();
     } catch (err) {

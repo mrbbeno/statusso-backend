@@ -31,6 +31,22 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'client_name is required' });
     }
 
+    // Check plan limits
+    if (req.user.plan === 'free') {
+      const { count, error: countError } = await req.supabase
+        .from('clients')
+        .select('*', { count: 'exact', head: true });
+
+      if (countError) throw countError;
+
+      if (count >= 1) {
+        return res.status(403).json({
+          error: 'Limit reached',
+          details: 'Free plan is limited to 1 client. Please upgrade to Pro for unlimited clients.'
+        });
+      }
+    }
+
     // Létrehozzuk az ügyfelet
     const { data: clientData, error: clientError } = await req.supabase
       .from('clients')
@@ -65,7 +81,11 @@ router.post('/', async (req, res) => {
     res.status(201).json(clientData[0]);
   } catch (err) {
     console.error('Error creating client:', err);
-    res.status(400).json({ error: 'Failed to create client' });
+    res.status(400).json({
+      error: 'Failed to create client',
+      details: err.message,
+      hint: 'Did you add the public_token column to the clients table?'
+    });
   }
 });
 
