@@ -45,6 +45,22 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields: project_title or client_id' });
     }
 
+    // Check plan limits
+    if (req.user.plan === 'free') {
+      const { count, error: countError } = await req.supabase
+        .from('projects')
+        .select('*', { count: 'exact', head: true });
+
+      if (countError) throw countError;
+
+      if (count >= 3) {
+        return res.status(403).json({
+          error: 'Limit reached',
+          details: 'Free plan is limited to 3 projects. Please upgrade to Pro for unlimited projects.'
+        });
+      }
+    }
+
     const { data, error } = await req.supabase
       .from('projects')
       .insert([{
