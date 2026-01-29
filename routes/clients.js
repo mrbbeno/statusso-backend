@@ -32,14 +32,14 @@ router.post('/', async (req, res) => {
     }
 
     // Létrehozzuk az ügyfelet
-    // Note: RLS policies usually default user_id to auth.uid(), but we can explicit it
     const { data: clientData, error: clientError } = await req.supabase
       .from('clients')
       .insert([{
         client_name,
         phone,
         email,
-        user_id: req.user.id
+        user_id: req.user.id,
+        public_token: require('crypto').randomUUID()
       }])
       .select();
 

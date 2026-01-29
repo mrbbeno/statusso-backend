@@ -7,12 +7,24 @@ router.get('/client/:publicToken', async (req, res) => {
     const { publicToken } = req.params;
 
     try {
-        // 1. Fetch Client info (SELECTIVE) by public_token
-        const { data: client, error: clientError } = await supabase
+        // 1. Fetch Client info (SELECTIVE)
+        // We try BOTH public_token and numeric ID to maximize compatibility
+        let query = supabase
             .from('clients')
-            .select('id, client_name') // Only public info
-            .eq('public_token', publicToken)
-            .single();
+            .select('id, client_name');
+
+        if (publicToken.match(/^[0-9a-fA-F-]{36}$/)) {
+            // It's a UUID
+            query = query.eq('public_token', publicToken);
+        } else if (!isNaN(publicToken)) {
+            // It's a numeric ID
+            query = query.eq('id', publicToken);
+        } else {
+            // Just try public_token anyway
+            query = query.eq('public_token', publicToken);
+        }
+
+        const { data: client, error: clientError } = await query.single();
 
         if (clientError || !client) {
             return res.status(404).json({ error: 'Client not found' });
