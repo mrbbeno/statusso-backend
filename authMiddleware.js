@@ -38,7 +38,7 @@ const authMiddleware = async (req, res, next) => {
             .from('profiles')
             .select('plan')
             .eq('id', user.id)
-            .single();
+            .maybeSingle();
 
         req.user = {
             ...user,
