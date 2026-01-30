@@ -47,7 +47,21 @@ router.get('/client/:publicToken', async (req, res) => {
         // 2. Fetch Projects (SELECTIVE)
         const { data: projects, error: projectsError } = await supabase
             .from('projects')
-            .select('id, project_title, status, eta, description') // Only public info
+            .select(`
+                id, 
+                project_title, 
+                status, 
+                eta, 
+                description, 
+                created_at, 
+                updated_at,
+                project_milestones (
+                    id, 
+                    title, 
+                    status, 
+                    order_index
+                )
+            `) // Only public info + milestones
             .eq('client_id', clientId)
             .order('created_at', { ascending: false });
 
