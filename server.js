@@ -9,6 +9,7 @@ const app = express();
 const clientsRouter = require('./routes/clients');
 const projectsRouter = require('./routes/projects');
 const publicRouter = require('./routes/public');
+const statsRouter = require('./routes/stats');
 
 const corsOptions = {
   origin: true, // Re-enabling permissive CORS to fix your connection issue
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/clients', clientsRouter);
 app.use('/projects', projectsRouter);
 app.use('/public', publicRouter);
+app.use('/stats', statsRouter);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
