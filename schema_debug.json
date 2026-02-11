@@ -1,0 +1,17 @@
+{
+  "tableName": "interactions",
+  "columns": [
+    "id",
+    "project_id",
+    "client_id",
+    "user_id",
+    "type",
+    "content",
+    "author_type",
+    "author_name",
+    "created_at",
+    "is_read",
+    "is_internal",
+    "workspace_id"
+  ]
+}

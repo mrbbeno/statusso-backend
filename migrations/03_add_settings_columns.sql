@@ -1,0 +1,32 @@
+-- Add missing columns for Settings page (Security, Billing, Workspace Identity)
+
+ALTER TABLE public.profiles
+ADD COLUMN IF NOT EXISTS plan TEXT DEFAULT 'free',
+ADD COLUMN IF NOT EXISTS password_min_length INTEGER DEFAULT 8,
+ADD COLUMN IF NOT EXISTS require_special_chars BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS require_numbers BOOLEAN DEFAULT TRUE,
+ADD COLUMN IF NOT EXISTS require_uppercase BOOLEAN DEFAULT TRUE,
+ADD COLUMN IF NOT EXISTS password_expiration TEXT DEFAULT 'never',
+ADD COLUMN IF NOT EXISTS require_2fa_workspace BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS session_timeout TEXT DEFAULT '30m',
+ADD COLUMN IF NOT EXISTS allow_concurrent_sessions BOOLEAN DEFAULT TRUE,
+ADD COLUMN IF NOT EXISTS restrict_ips BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS ip_whitelist JSONB DEFAULT '[]'::jsonb,
+ADD COLUMN IF NOT EXISTS portal_intro TEXT,
+ADD COLUMN IF NOT EXISTS slug TEXT,
+ADD COLUMN IF NOT EXISTS industry TEXT,
+ADD COLUMN IF NOT EXISTS company_size TEXT,
+ADD COLUMN IF NOT EXISTS website TEXT,
+ADD COLUMN IF NOT EXISTS company_description TEXT,
+ADD COLUMN IF NOT EXISTS timezone TEXT DEFAULT 'UTC',
+ADD COLUMN IF NOT EXISTS date_format TEXT DEFAULT 'YYYY-MM-DD',
+ADD COLUMN IF NOT EXISTS time_format TEXT DEFAULT '24-hour',
+ADD COLUMN IF NOT EXISTS week_start TEXT DEFAULT 'Monday',
+ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'USD',
+ADD COLUMN IF NOT EXISTS number_format TEXT DEFAULT '1,234.56',
+ADD COLUMN IF NOT EXISTS stale_alert_days INTEGER DEFAULT 7,
+ADD COLUMN IF NOT EXISTS weekend_mode BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS auto_archive BOOLEAN DEFAULT FALSE;
+
+COMMENT ON COLUMN public.profiles.plan IS 'Subscription plan: free, pro, agency';
+COMMENT ON COLUMN public.profiles.password_min_length IS 'Security: Minimum password length';

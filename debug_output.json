@@ -1,0 +1,47 @@
+{
+  "team_members": [
+    {
+      "id": "63318cf7-8d6a-4642-b68e-bc981b913c86",
+      "owner_id": "c0b89a40-0628-4d0a-b2d2-893e49296c00",
+      "email": "beno.titkos@gmail.com",
+      "role": "editor",
+      "status": "pending",
+      "created_at": "2026-02-01T02:27:10.337031+00:00",
+      "updated_at": "2026-02-01T02:27:10.337031+00:00"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "c0b89a40-0628-4d0a-b2d2-893e49296c00",
+      "email": null,
+      "plan": "pro",
+      "company_name": "Beno's"
+    },
+    {
+      "id": "61c0efca-1fd9-4b49-a8ca-2a1c417f78bf",
+      "email": "beno.titkos@gmail.com",
+      "plan": "free",
+      "company_name": null
+    },
+    {
+      "id": "543aa372-5444-47c9-8797-50d6b9817d90",
+      "email": "optimaai.management@gmail.com",
+      "plan": "free",
+      "company_name": "Optimaai"
+    }
+  ],
+  "users": [
+    {
+      "id": "61c0efca-1fd9-4b49-a8ca-2a1c417f78bf",
+      "email": "beno.titkos@gmail.com"
+    },
+    {
+      "id": "543aa372-5444-47c9-8797-50d6b9817d90",
+      "email": "optimaai.management@gmail.com"
+    },
+    {
+      "id": "c0b89a40-0628-4d0a-b2d2-893e49296c00",
+      "email": "balazs.benedek2006@gmail.com"
+    }
+  ]
+}
